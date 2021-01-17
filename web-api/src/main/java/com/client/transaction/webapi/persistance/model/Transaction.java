@@ -10,17 +10,19 @@ import org.springframework.stereotype.Repository;
 @Setter
 @Repository
 @Document(collection = "transaction")
-public class TransactionModel {
+public class Transaction {
 
     @Id
-    public int clientId;
-    public double transactionsAmount;
+    private String _id;
+    private String _clientId;
+    private Double transactionsAmount;
 
-    public TransactionModel() {
+    public Transaction() {
     }
 
-    public TransactionModel(int clientId, double transactionsAmount) {
-        this.clientId = clientId;
+    public Transaction(String _id, String _clientId, double transactionsAmount) {
+        this._id = _id;
+        this._clientId = _clientId;
         this.transactionsAmount = transactionsAmount;
     }
 }

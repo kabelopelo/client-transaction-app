@@ -1,7 +1,7 @@
 package com.client.transaction.webapi.dtos.response;
 
-import com.client.transaction.webapi.dtos.TransactionDto;
 import com.client.transaction.webapi.enums.RequestStatusEnum;
+import com.client.transaction.webapi.persistance.model.Transaction;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class TransactionResponseDto extends ResponseDto {
 
-    TransactionDto transactionDto;
+    Transaction transaction;
 
     public TransactionResponseDto() {
     }
