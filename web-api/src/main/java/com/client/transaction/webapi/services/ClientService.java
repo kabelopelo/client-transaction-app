@@ -1,6 +1,7 @@
 package com.client.transaction.webapi.services;
 
 import com.client.transaction.webapi.dtos.response.ResponseDto;
+import com.client.transaction.webapi.exceptions.ValidationException;
 import com.client.transaction.webapi.persistance.model.Client;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface ClientService {
      * @param client containing details of the new client to be created.
      * @return ResponseDto of the created client containing response status code.
      */
-    public ResponseDto createClient(Client client);
+    public ResponseDto createClient(Client client) throws ValidationException;
 
     /**
      * Update existing client.
@@ -22,7 +23,7 @@ public interface ClientService {
      * @param client containing new values to update existing client information with.
      * @return ResponseDto of the updated client containing response status code.
      */
-    public ResponseDto updateClient(Client client);
+    public ResponseDto updateClient(Client client) throws ValidationException;
 
     /**
      * Delete existing client.

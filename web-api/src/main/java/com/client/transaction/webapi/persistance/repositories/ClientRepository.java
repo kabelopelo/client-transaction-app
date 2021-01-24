@@ -12,4 +12,8 @@ public interface ClientRepository extends MongoRepository<Client, String> {
 
     public List<Client> findByLastName(String lastName);
 
+    public Client findByMobileNumber(String mobileNumber);
+
+    public Client findByIdNumber(String idNumber);
+
 }

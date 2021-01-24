@@ -2,9 +2,11 @@ package com.client.transaction.webapi.impl;
 
 import com.client.transaction.webapi.dtos.response.TransactionResponseDto;
 import com.client.transaction.webapi.enums.RequestStatusEnum;
+import com.client.transaction.webapi.exceptions.ValidationException;
 import com.client.transaction.webapi.persistance.model.Transaction;
 import com.client.transaction.webapi.persistance.repositories.TransactionRepository;
 import com.client.transaction.webapi.services.TransactionService;
+import com.client.transaction.webapi.services.TransactionValidationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +21,17 @@ public class TransactionServiceImpl implements TransactionService {
     @Autowired
     private TransactionRepository transactionRepository;
 
+    @Autowired
+    private TransactionValidationService transactionValidationService;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(TransactionServiceImpl.class.getName());
 
     @Override
-    public TransactionResponseDto createTransaction(Transaction transaction) {
+    public TransactionResponseDto createTransaction(Transaction transaction) throws ValidationException {
         TransactionResponseDto transactionResponseDto = new TransactionResponseDto();
+
+        transactionValidationService.validateTransaction(transaction);
+
         Transaction transactionResponse = transactionRepository.save(transaction);
 
         if (transactionResponse.get_id() != null) {
@@ -37,8 +45,10 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public TransactionResponseDto updateTransactions(Transaction transaction) {
+    public TransactionResponseDto updateTransactions(Transaction transaction) throws ValidationException {
         TransactionResponseDto transactionResponseDto = new TransactionResponseDto();
+
+        transactionValidationService.validateTransaction(transaction);
 
         if (transactionRepository.existsById(transaction.get_id())) {
             transactionResponseDto.setTransaction(transactionRepository.save(transaction));

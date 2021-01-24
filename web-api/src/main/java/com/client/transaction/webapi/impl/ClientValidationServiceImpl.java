@@ -3,20 +3,24 @@ package com.client.transaction.webapi.impl;
 import com.client.transaction.webapi.enums.ValidationErrorEnum;
 import com.client.transaction.webapi.exceptions.ValidationException;
 import com.client.transaction.webapi.persistance.model.Client;
+import com.client.transaction.webapi.persistance.repositories.ClientRepository;
 import com.client.transaction.webapi.services.ClientValidationService;
 import com.client.transaction.webapi.utils.StringUtilsExt;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ClientValidationServiceImpl implements ClientValidationService {
 
-    public void validateClient(Client client) throws ValidationException {
+    @Autowired
+    private ClientRepository clientRepository;
 
+    public void validateClient(Client client) throws ValidationException {
         this.validateClientName(client);
         this.validateClientMobileNumber(client.getMobileNumber());
-        this.validateDuplicateClientCellphoneNumber(client.getMobileNumber());
         this.validateClientIdNumber(client.getIdNumber());
-        this.validateDuplicateClientIdNumber(client.getIdNumber());
+        this.isDuplicateClientCellphoneNumber(client.getMobileNumber());
+        this.isDuplicateClientIdNumber(client.getIdNumber());
     }
 
 
@@ -43,12 +47,14 @@ public class ClientValidationServiceImpl implements ClientValidationService {
     }
 
     @Override
-    public void validateDuplicateClientCellphoneNumber(String cellphoneNumber) {
-
+    public boolean isDuplicateClientCellphoneNumber(String cellphoneNumber) {
+        Client client = clientRepository.findByMobileNumber(cellphoneNumber);
+        return client == null ? false : true;
     }
 
     @Override
-    public void validateDuplicateClientIdNumber(String IdNumber) {
-
+    public boolean isDuplicateClientIdNumber(String IdNumber) {
+        Client client = clientRepository.findByIdNumber(IdNumber);
+        return client == null ? false : true;
     }
 }
