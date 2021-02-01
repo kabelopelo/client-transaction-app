@@ -60,7 +60,7 @@ public class TransactionController {
         return transactionService.updateTransactions(transaction);
     }
 
-    @PutMapping("/delete-transaction/{transactionId}")
+    @DeleteMapping("/delete-transaction/{transactionId}")
     public TransactionResponseDto updateTransaction(@PathVariable String transactionId) {
         LOGGER.info("Deleting transaction with id : {}", transactionId);
 
