@@ -10,21 +10,21 @@ import org.springframework.stereotype.Repository;
 @Setter
 @Repository
 @Document(collection = "client")
-public class ClientModel {
+public class Client {
 
     @Id
-    public String _id;
-    public String firstName;
-    public String lastName;
-    public String fullName;
-    public String mobileNumber;
-    public String idNumber;
-    public String physicalAddress;
+    private String _id;
+    private String firstName;
+    private String lastName;
+    private String fullName;
+    private String mobileNumber;
+    private String idNumber;
+    private String physicalAddress;
 
-    public ClientModel() {
+    public Client() {
     }
 
-    public ClientModel(String firstName, String lastName, String fullName, String mobileNumber, String idNumber, String physicalAddress) {
+    public Client(String firstName, String lastName, String fullName, String mobileNumber, String idNumber, String physicalAddress) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.fullName = fullName;

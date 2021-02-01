@@ -1,49 +1,58 @@
 package com.client.transaction.webapi.impl;
 
-import com.client.transaction.webapi.dtos.ClientDto;
+import com.client.transaction.webapi.enums.ValidationErrorEnum;
 import com.client.transaction.webapi.exceptions.ValidationException;
+import com.client.transaction.webapi.persistance.model.Client;
+import com.client.transaction.webapi.persistance.repositories.ClientRepository;
 import com.client.transaction.webapi.services.ClientValidationService;
+import com.client.transaction.webapi.utils.StringUtilsExt;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ClientValidationServiceImpl implements ClientValidationService {
 
-    public void validateClient(ClientDto clientDto) throws ValidationException {
+    @Autowired
+    private ClientRepository clientRepository;
 
-        this.validateMandatoryClientDetails(clientDto);
-        this.validateClientName(clientDto);
-        this.validateClientMobileNumber(clientDto.getMobileNumber());
-        this.validateDuplicateClientCellphoneNumber(clientDto.getMobileNumber());
-        this.validateClientIdNumber(clientDto.getIdNumber());
-        this.validateDuplicateClientIdNumber(clientDto.getIdNumber());
+    public void validateClient(Client client) throws ValidationException {
+        this.validateClientName(client);
+        this.validateClientMobileNumber(client.getMobileNumber());
+        this.validateClientIdNumber(client.getIdNumber());
+        this.isDuplicateClientCellphoneNumber(client.getMobileNumber());
+        this.isDuplicateClientIdNumber(client.getIdNumber());
+    }
+
+
+    @Override
+    public void validateClientName(Client client) throws ValidationException {
+        if (!StringUtilsExt.hasMinNameLength(client.getFirstName(), 3)
+                || !StringUtilsExt.hasMinNameLength(client.getLastName(), 3)) {
+            throw new ValidationException(ValidationErrorEnum.INVALID_CLIENT_NAME);
+        }
     }
 
     @Override
-    public void validateMandatoryClientDetails(ClientDto clientDto) {
-
+    public void validateClientMobileNumber(String cellphoneNumber) throws ValidationException {
+        if (!StringUtilsExt.isValidCellphoneNumber(cellphoneNumber)) {
+            throw new ValidationException(ValidationErrorEnum.INVALID_CELL_NUMBER);
+        }
     }
 
     @Override
-    public void validateClientMobileNumber(String cellphoneNumber) {
-
+    public void validateClientIdNumber(String IdNumber) throws ValidationException {
+        if (!StringUtilsExt.isValidIdentification(IdNumber)) {
+            throw new ValidationException(ValidationErrorEnum.INVALID_ID_NUMBER);
+        }
     }
 
     @Override
-    public void validateDuplicateClientCellphoneNumber(String cellphoneNumber) {
-
+    public boolean isDuplicateClientCellphoneNumber(String cellphoneNumber) {
+        return clientRepository.existsByMobileNumber(cellphoneNumber) ? false : true;
     }
 
     @Override
-    public void validateClientIdNumber(String IdNumber) {
-
-    }
-
-    @Override
-    public void validateDuplicateClientIdNumber(String IdNumber) {
-
-    }
-
-    @Override
-    public void validateClientName(ClientDto clientDto) {
+    public boolean isDuplicateClientIdNumber(String IdNumber) {
+        return clientRepository.existsByIdNumber(IdNumber) ? false : true;
     }
 }

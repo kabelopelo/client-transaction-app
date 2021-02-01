@@ -1,8 +1,8 @@
 package com.client.transaction.webapi.impl;
 
-import com.client.transaction.webapi.dtos.ClientDto;
 import com.client.transaction.webapi.enums.ValidationErrorEnum;
 import com.client.transaction.webapi.exceptions.ValidationException;
+import com.client.transaction.webapi.persistance.model.Client;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,120 +11,93 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ClientValidationServiceImplTest {
 
     private ClientValidationServiceImpl clientValidationService;
-    public ClientDto clientDto;
+    public Client client;
 
     @BeforeEach
     public void init() {
         clientValidationService = new ClientValidationServiceImpl();
-        clientDto = new ClientDto();
-    }
-
-    @Test
-    public void TestValidateMandatoryClientDetails() {
-
-        ValidationException validationException = assertThrows(ValidationException.class, () -> {
-            clientValidationService.validateMandatoryClientDetails(clientDto);
-        });
-        assertEquals(validationException.getMessage(), ValidationErrorEnum.MISSING_REQUIRED_ELEMENT_NAME.getMessage());
-
-        clientDto = new ClientDto("Marry", null, null, null, null);
-        validationException = assertThrows(ValidationException.class, () -> {
-            clientValidationService.validateMandatoryClientDetails(clientDto);
-        });
-        assertEquals(validationException.getMessage(), ValidationErrorEnum.MISSING_REQUIRED_ELEMENT_NAME.getMessage());
-
-        clientDto = new ClientDto("Marry", "Jane", null, null, null);
-        validationException = assertThrows(ValidationException.class, () -> {
-            clientValidationService.validateMandatoryClientDetails(clientDto);
-        });
-        assertEquals(validationException.getMessage(), ValidationErrorEnum.MISSING_REQUIRED_ELEMENT_ID.getMessage());
-
-        clientDto = new ClientDto("Marry", "Jane", null, "8911115933087", null);
-        assertDoesNotThrow(() -> {
-            clientValidationService.validateMandatoryClientDetails(clientDto);
-        });
-
+        client = new Client();
     }
 
     @Test
     public void TestValidateClientName() {
         ValidationException validationException = assertThrows(ValidationException.class, () -> {
-            clientValidationService.validateClientName(clientDto);
+            clientValidationService.validateClientName(client);
         });
         assertEquals(validationException.getMessage(), ValidationErrorEnum.INVALID_CLIENT_NAME.getMessage());
 
-        clientDto = new ClientDto("M", "Jane", null, null, null);
+        client = new Client("M", "Jane", null, null, null, null);
         validationException = assertThrows(ValidationException.class, () -> {
-            clientValidationService.validateClientName(clientDto);
+            clientValidationService.validateClientName(client);
         });
         assertEquals(validationException.getMessage(), ValidationErrorEnum.INVALID_CLIENT_NAME.getMessage());
 
-        clientDto = new ClientDto("Marry", "Ja", null, null, null);
+        client = new Client("Marry", "Ja", null, null, null, null);
         validationException = assertThrows(ValidationException.class, () -> {
-            clientValidationService.validateClientName(clientDto);
+            clientValidationService.validateClientName(client);
         });
         assertEquals(validationException.getMessage(), ValidationErrorEnum.INVALID_CLIENT_NAME.getMessage());
 
-        clientDto = new ClientDto("Ma", "Ja", null, null, null);
+        client = new Client("Ma", "Ja", null, null, null, null);
         validationException = assertThrows(ValidationException.class, () -> {
-            clientValidationService.validateClientName(clientDto);
+            clientValidationService.validateClientName(client);
         });
         assertEquals(validationException.getMessage(), ValidationErrorEnum.INVALID_CLIENT_NAME.getMessage());
 
-        clientDto = new ClientDto("Mar", "Jan", null, null, null);
+        client = new Client("Mar", "Jan", null, null, null, null);
         assertDoesNotThrow(() -> {
-            clientValidationService.validateClientName(clientDto);
+            clientValidationService.validateClientName(client);
         });
 
-        clientDto = new ClientDto("Marry", "Jane", null, null, null);
+        client = new Client("Marry", "Jane", null, null, null, null);
         assertDoesNotThrow(() -> {
-            clientValidationService.validateClientName(clientDto);
+            clientValidationService.validateClientName(client);
         });
     }
 
     @Test
     public void TestValidateMobileNumber() {
-        clientDto = new ClientDto(null, null, "22222", null, null);
+        client = new Client(null, null, null, "22222", null, null);
         ValidationException validationException = assertThrows(ValidationException.class, () -> {
-            clientValidationService.validateClientMobileNumber(clientDto.getMobileNumber());
+            clientValidationService.validateClientMobileNumber(client.getMobileNumber());
         });
-        assertEquals(validationException.getMessage(), ValidationErrorEnum.INVALID_PHONE_NUMBER.getMessage());
+        assertEquals(validationException.getMessage(), ValidationErrorEnum.INVALID_CELL_NUMBER.getMessage());
 
-        clientDto = new ClientDto(null, null, "2222222222", null, null);
+        client = new Client(null, null, null, "2222222222", null, null);
         validationException = assertThrows(ValidationException.class, () -> {
-            clientValidationService.validateClientMobileNumber(clientDto.getMobileNumber());
+            clientValidationService.validateClientMobileNumber(client.getMobileNumber());
         });
-        assertEquals(validationException.getMessage(), ValidationErrorEnum.INVALID_PHONE_NUMBER.getMessage());
+        assertEquals(validationException.getMessage(), ValidationErrorEnum.INVALID_CELL_NUMBER.getMessage());
 
-        clientDto = new ClientDto(null, null, "0122222222", null, null);
+        client = new Client(null, null, null, "0122222222", null, null);
         validationException = assertThrows(ValidationException.class, () -> {
-            clientValidationService.validateClientMobileNumber(clientDto.getMobileNumber());
+            clientValidationService.validateClientMobileNumber(client.getMobileNumber());
         });
-        assertEquals(validationException.getMessage(), ValidationErrorEnum.INVALID_PHONE_NUMBER.getMessage());
+        assertEquals(validationException.getMessage(), ValidationErrorEnum.INVALID_CELL_NUMBER.getMessage());
 
-        clientDto = new ClientDto(null, null, "0722222", null, null);
+        client = new Client(null, null, null, "0722222", null, null);
         validationException = assertThrows(ValidationException.class, () -> {
-            clientValidationService.validateClientMobileNumber(clientDto.getMobileNumber());
+            clientValidationService.validateClientMobileNumber(client.getMobileNumber());
         });
-        assertEquals(validationException.getMessage(), ValidationErrorEnum.INVALID_PHONE_NUMBER.getMessage());
+        assertEquals(validationException.getMessage(), ValidationErrorEnum.INVALID_CELL_NUMBER.getMessage());
 
-        clientDto = new ClientDto(null, null, "0722222222", null, null);
+        client = new Client(null, null, null, "0722222222", null, null);
         assertDoesNotThrow(() -> {
-            clientValidationService.validateClientMobileNumber(clientDto.getMobileNumber());
+            clientValidationService.validateClientMobileNumber(client.getMobileNumber());
         });
     }
 
     @Test
     public void TestValidateIDNumber() {
-        clientDto = new ClientDto(null, null, null, "891111593308", null);
+        client = new Client(null, null, null, null, "891111593308", null);
         ValidationException validationException = assertThrows(ValidationException.class, () -> {
-            clientValidationService.validateClientIdNumber(clientDto.getIdNumber());
+            clientValidationService.validateClientIdNumber(client.getIdNumber());
         });
         assertEquals(validationException.getMessage(), ValidationErrorEnum.INVALID_ID_NUMBER.getMessage());
 
-        clientDto = new ClientDto(null, null, null, "8911115933087", null);
+        client = new Client(null, null, null, null, "8911115933087", null);
         assertDoesNotThrow(() -> {
-            clientValidationService.validateClientIdNumber(clientDto.getIdNumber());
+            clientValidationService.validateClientIdNumber(client.getIdNumber());
         });
     }
 }
