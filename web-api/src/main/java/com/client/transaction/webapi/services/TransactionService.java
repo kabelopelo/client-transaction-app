@@ -17,6 +17,6 @@ public interface TransactionService {
 
     public Optional<Transaction> getTransactionById(String transactionId);
 
-    public List<Transaction> getAllTransactions();
+    public List<Transaction> getAllTransactions(String clientId);
 
 }

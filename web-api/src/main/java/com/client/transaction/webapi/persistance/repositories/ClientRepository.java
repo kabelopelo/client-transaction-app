@@ -16,4 +16,8 @@ public interface ClientRepository extends MongoRepository<Client, String> {
 
     public Client findByIdNumber(String idNumber);
 
+    public boolean existsByMobileNumber(String mobileNumber);
+
+    public boolean existsByIdNumber(String idNumber);
+
 }

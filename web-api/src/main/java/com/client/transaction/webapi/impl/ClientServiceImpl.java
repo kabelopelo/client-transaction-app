@@ -45,7 +45,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public ResponseDto updateClient(Client client) throws ValidationException {
+    public ClientResponseDto updateClient(Client client) throws ValidationException {
         ClientResponseDto clientResponseDto = new ClientResponseDto();
 
         clientValidationService.validateClient(client);
@@ -61,7 +61,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public ResponseDto deleteClient(String id) {
+    public ClientResponseDto deleteClient(String id) {
         ClientResponseDto clientResponseDto = new ClientResponseDto();
 
         if (repository.existsById(id)) {

@@ -48,13 +48,11 @@ public class ClientValidationServiceImpl implements ClientValidationService {
 
     @Override
     public boolean isDuplicateClientCellphoneNumber(String cellphoneNumber) {
-        Client client = clientRepository.findByMobileNumber(cellphoneNumber);
-        return client == null ? false : true;
+        return clientRepository.existsByMobileNumber(cellphoneNumber) ? false : true;
     }
 
     @Override
     public boolean isDuplicateClientIdNumber(String IdNumber) {
-        Client client = clientRepository.findByIdNumber(IdNumber);
-        return client == null ? false : true;
+        return clientRepository.existsByIdNumber(IdNumber) ? false : true;
     }
 }
