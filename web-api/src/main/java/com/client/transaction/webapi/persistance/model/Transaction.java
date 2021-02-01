@@ -13,13 +13,14 @@ import java.util.Date;
 @Setter
 @Repository
 @Document(collection = "transaction")
+@JsonFormat(shape = JsonFormat.Shape.NUMBER)
 public class Transaction {
 
     @Id
     private String _id;
     private String _clientId;
     private Double transactionsAmount;
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", locale = "en_GB")
     private Date date;
 
     public Transaction() {
